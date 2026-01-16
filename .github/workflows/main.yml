@@ -9,7 +9,8 @@ on:
     branches: ["main"]
 
 env:
-  PythonVersion: 3.8
+  PythonVersion: 3.11
+  IMAGE_NAME: eldard/test
 
 jobs:
   python-ci:
@@ -61,13 +62,13 @@ jobs:
           name: python-artifacts
           path: .
 
-  build-image:
+  docker-ci:
     runs-on: ubuntu-latest
-    if: ${{ github.ref == 'main' }}
+    if: github.ref_name == 'main'
     needs: python-ci
     steps:
-    - uses: actions/checkout@v4
-      name: Dowload python artifacts
+    - uses: actions/download-artifact@v4
+      name: Download python artifacts
       with:
         name: python-artifacts
         path: .
